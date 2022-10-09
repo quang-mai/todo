@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Todo.Api2": {
+    "Todo.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

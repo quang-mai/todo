@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using TodoApi.Models;
+using Todo.Api.Models;
 
-namespace TodoApi.Controllers
+namespace Todo.Api.Controllers
 {
     [ApiController]
     [Route("api/lists/{listId:int}/[controller]")]

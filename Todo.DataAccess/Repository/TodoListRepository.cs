@@ -6,16 +6,14 @@ namespace Todo.DataAccess.Repository
     {
         IEnumerable<TodoList> GetLists ();
         void AddList(TodoList list);
+        TodoList GetList (int listId);
         void Save();
     }
 
-    public class TodoListRepository : ITodoListRepository
+    public class TodoListRepository : BaseRepository, ITodoListRepository 
     {
-        private readonly TodoContext _context;
-
-        public TodoListRepository (TodoContext context)
+        public TodoListRepository (TodoContext context) : base(context)
         {
-            _context = context;
         }
 
         public IEnumerable<TodoList> GetLists ()
@@ -23,14 +21,16 @@ namespace Todo.DataAccess.Repository
             return _context.TodoLists.ToList();
         }
 
+        public TodoList GetList (int listId)
+        {
+            return _context.TodoLists.Find(listId);
+        }
+
         public void AddList(TodoList list)
         {
             _context.TodoLists.Add(list);
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
+        
     }
 }

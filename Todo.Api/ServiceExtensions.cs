@@ -11,6 +11,7 @@ namespace Todo.Api
             {
                 services.AddScoped<ITodoService, TodoService>();
                 services.AddScoped<ITodoListRepository, TodoListRepository>();
+                services.AddScoped<ITodoTaskRepository, TodoTaskRepository>();
                 services.AddTransient<TodoContext>();
 
                 return services;

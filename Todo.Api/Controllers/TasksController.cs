@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Todo.Api.Models;
+using Todo.DataAccess.Models;
+using Todo.Domain.Service;
 
 namespace Todo.Api.Controllers
 {
@@ -7,35 +9,51 @@ namespace Todo.Api.Controllers
     [Route("api/todo/lists/{listId:int}/[controller]")]
     public class TasksController: ControllerBase
     {
-        [HttpGet]
-        [Route("~/api/todo/lists/[controller]")]
-        public int GetAllTasks()
+        private readonly ITodoService _todoService;
+        public TasksController (ITodoService todoService)
         {
-            return 2000;
+            _todoService = todoService;
         }
 
         [HttpGet]
-        public int GetAllTasks(int listId)
+        [Route("~/api/todo/lists/[controller]")]
+        public IEnumerable<Todo.Domain.Models.TodoTask>  GetAllTasks()
         {
-            return listId;
+            return _todoService.GetAllTasks();
+        }
+
+        [HttpGet]
+        public IEnumerable<Todo.Domain.Models.TodoTask> GetAllTasks(int listId)
+        {
+            return _todoService.GetAllTasks(listId);
         }
 
         [HttpPost]
-        public int AddTask(TodoTaskDTO todoTaskDto)
+        public Todo.Domain.Models.TodoTask AddTask(int listId, TodoTaskDTO todoTaskDto)
         {
-            return 200;
+            var task = new Todo.Domain.Models.TodoTask {
+                Label = todoTaskDto.Label
+            };
+
+            return _todoService.AddTask(listId, task);
         }
 
         [HttpPut("{taskId}")]
-        public long UpdateTask(long taskId, TodoTaskDTO todoTaskDto)
+        public Todo.Domain.Models.TodoTask UpdateTask(int taskId, TodoTaskDTO todoTaskDto)
         {
-            return taskId;
+            var task = new Todo.Domain.Models.TodoTask {
+                Id = taskId,
+                Label = todoTaskDto.Label,
+                isCompleted = todoTaskDto.isCompleted
+            };
+
+            return _todoService.UpdateTask(task);
         }
 
         [HttpDelete("{taskId}")]
-        public long DeleteTask(long taskId)
+        public void DeleteTask(int taskId)
         {
-            return taskId;
+            _todoService.DeleteTask(taskId);
         }
     }
 }

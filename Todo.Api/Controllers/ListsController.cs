@@ -24,20 +24,13 @@ namespace Todo.Api.Controllers
     }
 
     [HttpPost]
-    public TodoListDTO AddList(TodoListDTO listDTO)
+    public TodoList AddList(TodoListDTO listDTO)
     {
       var list = new TodoList {
         Label = listDTO.Label
       };
 
-      var result = _todoService.AddList(list);
-
-      var resultList = new TodoListDTO {
-        Id = result.Id,
-        Label = result.Label
-      };
-
-      return resultList;
+      return _todoService.AddList(list);
     }
   }
 }

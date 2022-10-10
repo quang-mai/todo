@@ -6,7 +6,7 @@ using Todo.Domain.Service;
 namespace Todo.Api.Controllers
 { 
   [ApiController]
-  [Route("api/[controller]")]
+  [Route("api/todo/[controller]")]
   public class ListsController: ControllerBase
   {
     private readonly ITodoService _todoService;
@@ -23,9 +23,9 @@ namespace Todo.Api.Controllers
     }
 
     [HttpPost]
-    public ListDTO AddLists(ListDTO listDTO)
+    public TodoListDTO AddLists(TodoListDTO listDTO)
     {
-      return new ListDTO {
+      return new TodoListDTO {
         Label = listDTO.Label
       };
     }

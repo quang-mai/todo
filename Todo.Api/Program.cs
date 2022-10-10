@@ -1,4 +1,3 @@
-
 using Todo.Api;
 
 var builder = WebApplication.CreateBuilder(args);

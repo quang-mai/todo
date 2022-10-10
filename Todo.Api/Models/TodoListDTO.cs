@@ -1,6 +1,6 @@
 namespace Todo.Api.Models
 {
-    public class ListDTO
+    public class TodoListDTO
     {
         public string? Label { get; set; }
     }

@@ -6,6 +6,7 @@ namespace Todo.Domain.Service
     public interface ITodoService
     {
         IEnumerable<TodoList> GetLists ();
+        TodoList AddList(TodoList todoList);
     }
 
     public class TodoService : ITodoService
@@ -33,6 +34,23 @@ namespace Todo.Domain.Service
             }
 
             return todoList;
+        }
+
+        public TodoList AddList(TodoList todoList)
+        {
+            var dalList = new Todo.DataAccess.Models.TodoList {
+                Label = todoList.Label
+            };
+
+            _todoListRepository.AddList(dalList);
+            _todoListRepository.Save();
+
+            var newList = new TodoList {
+                Id = dalList.Id,
+                Label = dalList.Label
+            };
+
+            return newList;
         }
 
     }

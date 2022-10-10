@@ -1,6 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Api.Models;
+using Todo.Domain.Models;
 using Todo.Domain.Service;
 
 namespace Todo.Api.Controllers
@@ -17,9 +17,10 @@ namespace Todo.Api.Controllers
     }
 
     [HttpGet]
-    public bool GetLists()
+    public IEnumerable<TodoList> GetLists()
     {
-      return true;
+      var todoLists = _todoService.GetLists();
+      return todoLists;
     }
 
     [HttpPost]

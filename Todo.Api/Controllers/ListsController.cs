@@ -17,9 +17,9 @@ namespace Todo.Api.Controllers
     }
 
     [HttpGet]
-    public IEnumerable<TodoList> GetLists()
+    public IEnumerable<TodoList> GetLists(bool withTasks)
     {
-      var todoLists = _todoService.GetLists();
+      var todoLists = _todoService.GetLists(withTasks);
       return todoLists;
     }
 

@@ -5,7 +5,7 @@ namespace Todo.Domain.Service
 {
     public interface ITodoService
     {
-        IEnumerable<TodoList> GetLists ();
+        IEnumerable<TodoList> GetLists (bool withTasks);
         TodoList AddList(TodoList todoList);
         IEnumerable<TodoTask> GetAllTasks (int listId);
         IEnumerable<TodoTask> GetAllTasks ();
@@ -25,9 +25,9 @@ namespace Todo.Domain.Service
             _todoTaskRepository = todoTaskRepository;
         }
 
-        public IEnumerable<TodoList> GetLists ()
+        public IEnumerable<TodoList> GetLists (bool withTasks)
         {
-            var list = _todoListRepository.GetLists();
+            var list = _todoListRepository.GetLists(withTasks);
 
             List<TodoList> todoList = new List<TodoList>();
 
@@ -36,11 +36,28 @@ namespace Todo.Domain.Service
                 todoList.Add(new TodoList 
                 {
                     Id = item.Id,
-                    Label = item.Label
+                    Label = item.Label,
+                    Todos = withTasks ? mapTodoTasks(item.Todos) : null
                 });
             }
 
             return todoList;
+        }
+
+        private IEnumerable<TodoTask> mapTodoTasks (IEnumerable<DataAccess.Models.TodoTask> tasks)
+        {
+            var domainTasks = new List<TodoTask>();
+
+            foreach (var task in tasks)
+            {
+                domainTasks.Add(new TodoTask {
+                    Id = task.Id,
+                    Label = task.Label,
+                    isCompleted = task.isCompleted
+                });
+            }
+
+            return domainTasks;
         }
 
         public TodoList AddList(TodoList todoList)

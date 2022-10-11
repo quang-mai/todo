@@ -1,10 +1,11 @@
 using Todo.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Todo.DataAccess.Repository
 {
     public interface ITodoListRepository
     {
-        IEnumerable<TodoList> GetLists ();
+        IEnumerable<TodoList> GetLists (bool withTasks);
         void AddList(TodoList list);
         TodoList GetList (int listId);
         void Save();
@@ -16,9 +17,15 @@ namespace Todo.DataAccess.Repository
         {
         }
 
-        public IEnumerable<TodoList> GetLists ()
+        public IEnumerable<TodoList> GetLists (bool withTasks)
         {
+            if (withTasks)
+            {
+                return _context.TodoLists.Include(c => c.Todos).ToList();
+            }
+
             return _context.TodoLists.ToList();
+            
         }
 
         public TodoList GetList (int listId)

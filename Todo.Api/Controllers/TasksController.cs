@@ -15,6 +15,9 @@ namespace Todo.Api.Controllers
             _todoService = todoService;
         }
 
+        /// <summary>
+        /// Retrieves a flatten list of Todo Tasks
+        /// </summary>
         [HttpGet]
         [Route("~/api/todo/lists/[controller]")]
         public IEnumerable<Todo.Domain.Models.TodoTask>  GetAllTasks()
@@ -22,6 +25,9 @@ namespace Todo.Api.Controllers
             return _todoService.GetAllTasks();
         }
 
+        /// <summary>
+        /// Retrieves all Tasks from a specified List
+        /// </summary>
         [HttpGet]
         public IEnumerable<Todo.Domain.Models.TodoTask> GetAllTasks(int listId)
         {

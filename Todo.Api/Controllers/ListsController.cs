@@ -16,6 +16,9 @@ namespace Todo.Api.Controllers
       _todoService = todoService;
     }
 
+    /// <summary>
+    /// Retrieves all List with the option to include list of todo tasks.
+    /// </summary>
     [HttpGet]
     public IEnumerable<TodoList> GetLists(bool withTasks)
     {
@@ -23,6 +26,9 @@ namespace Todo.Api.Controllers
       return todoLists;
     }
 
+    /// <summary>
+    /// Add a Todo List
+    /// </summary>
     [HttpPost]
     public TodoList AddList(TodoListDTO listDTO)
     {

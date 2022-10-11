@@ -24,7 +24,7 @@ namespace Todo.DataAccess.Repository
 
      public TodoTask GetTask (int taskId)
     {
-        return _context.TodoTasks.Single(task => task.Id == taskId);
+        return _context.TodoTasks.SingleOrDefault(task => task.Id == taskId);
     }
 
     public IEnumerable<TodoTask> GetTasks (int listId)

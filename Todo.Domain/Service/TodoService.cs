@@ -1,5 +1,6 @@
 using Todo.Domain.Models;
 using Todo.DataAccess.Repository;
+using System.Web;
 
 namespace Todo.Domain.Service
 {
@@ -10,8 +11,8 @@ namespace Todo.Domain.Service
         IEnumerable<TodoTask> GetAllTasks (int listId);
         IEnumerable<TodoTask> GetAllTasks ();
         TodoTask AddTask(int listId, TodoTask todoTask);
-        TodoTask UpdateTask (TodoTask todoTask);
-        void DeleteTask (int taskId);
+        TodoTask UpdateTask (int listId, TodoTask todoTask);
+        void DeleteTask (int listId, int taskId);
     }
 
     public class TodoService : ITodoService
@@ -79,6 +80,8 @@ namespace Todo.Domain.Service
 
         public IEnumerable<TodoTask> GetAllTasks (int listId)
         {
+            CheckIfListExists(listId);
+
             var result =  _todoTaskRepository.GetTasks(listId);
 
             List<TodoTask> todoTasks = new List<TodoTask>();
@@ -117,7 +120,14 @@ namespace Todo.Domain.Service
 
         public TodoTask AddTask(int listId, TodoTask todoTask)
         {
-            //check if list exists
+            CheckIfListExists (listId);
+
+            var list = _todoListRepository.GetList(listId);
+
+            if (list == null)
+            {
+                throw new KeyNotFoundException();
+            }
 
             var task = new DataAccess.Models.TodoTask {
                 Label = todoTask.Label,
@@ -135,8 +145,11 @@ namespace Todo.Domain.Service
 
         }
 
-        public TodoTask UpdateTask (TodoTask todoTask)
+        public TodoTask UpdateTask (int listId, TodoTask todoTask)
         {
+            CheckIfListExists (listId);
+            CheckIfTaskExists (todoTask.Id);
+
             var task = _todoTaskRepository.GetTask(todoTask.Id);
             task.Label = todoTask.Label;
             task.isCompleted = todoTask.isCompleted;
@@ -151,11 +164,34 @@ namespace Todo.Domain.Service
             };
         }
 
-        public void DeleteTask (int taskId)
+        public void DeleteTask (int listId, int taskId)
         {
+            CheckIfListExists (listId);
+            CheckIfTaskExists (taskId);
+
            var task =  _todoTaskRepository.GetTask(taskId);
            _todoTaskRepository.DeleteTask(task);
            _todoTaskRepository.Save();
+        }
+
+        private void CheckIfListExists (int listId)
+        {
+            var list = _todoListRepository.GetList(listId);
+
+            if (list == null)
+            {
+                throw new KeyNotFoundException("List does not exist.");
+            }
+        }
+
+        private void CheckIfTaskExists (int taskId)
+        {
+            var task = _todoTaskRepository.GetTask(taskId);
+
+            if (task == null)
+            {
+                throw new KeyNotFoundException("Task does not exist.");
+            }
         }
     }
 }

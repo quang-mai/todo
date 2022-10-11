@@ -39,7 +39,7 @@ namespace Todo.Api.Controllers
         }
 
         [HttpPut("{taskId}")]
-        public Todo.Domain.Models.TodoTask UpdateTask(int taskId, TodoTaskDTO todoTaskDto)
+        public Todo.Domain.Models.TodoTask UpdateTask(int listId, int taskId, TodoTaskDTO todoTaskDto)
         {
             var task = new Todo.Domain.Models.TodoTask {
                 Id = taskId,
@@ -47,13 +47,13 @@ namespace Todo.Api.Controllers
                 isCompleted = todoTaskDto.isCompleted
             };
 
-            return _todoService.UpdateTask(task);
+            return _todoService.UpdateTask(listId, task);
         }
 
         [HttpDelete("{taskId}")]
-        public void DeleteTask(int taskId)
+        public void DeleteTask(int listId, int taskId)
         {
-            _todoService.DeleteTask(taskId);
+            _todoService.DeleteTask(listId, taskId);
         }
     }
 }
